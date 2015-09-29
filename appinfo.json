@@ -1,57 +1,62 @@
 {
-  "uuid": "32bf21ee-b05e-4a80-97b7-21d2e2419a71",
-  "shortName": "Trebble",
-  "longName": "Trebble: Checklists for Trello",
-  "companyName": "Schwittmann",
-  "versionCode": 1,
-  "versionLabel": "2.10",
-  "watchapp": {
-    "watchface": false
-  },
-  "appKeys": {
-    "type":        1000000,
-    "value":       1000001,
-    "numElements": 1000002,
-    "boardidx":    1000003,
-    "listidx":     1000004,
-    "cardidx":     1000005,
-    "checklistidx":1000006,
-    "itemidx":     1000007,
-    "itemstate":   1000008,
-    "checklistid": 1000009,
-    "failText":    1000010
-  },
-  "resources": {
-    "media": [
-      {
-        "type": "png",
-        "name": "TRELLO_BOX",
-        "file": "images/trello-box.png"
-      },
-      {
-        "type": "png",
-        "name": "TRELLO_CHECKED",
-        "file": "images/trello-checked.png"
-      },
-      {
-        "type": "png",
-        "name": "TRELLO_INFO",
-        "file": "images/trello-info.png"
-      },
-      {
-        "type": "png",
-        "name": "TRELLO_PENDING",
-        "file": "images/trello-pending.png"
-      },
-      {
-        "type": "png",
-        "name": "TRELLO_LOGO",
-        "menuIcon": true,
-        "file": "images/trello-logo.png"
-      }
-    ]
-  },
-  "capabilities": [
-    "configurable"
-  ]
+    "appKeys": {
+        "boardidx": 1000003,
+        "cardidx": 1000005,
+        "checklistid": 1000009,
+        "checklistidx": 1000006,
+        "failText": 1000010,
+        "itemidx": 1000007,
+        "itemstate": 1000008,
+        "listidx": 1000004,
+        "numElements": 1000002,
+        "type": 1000000,
+        "value": 1000001
+    },
+    "capabilities": [
+        "configurable"
+    ],
+    "companyName": "Team Opadoc",
+    "longName": "Trello Checklists",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/trello-checked.png",
+                "name": "TRELLO_CHECKED",
+                "type": "png"
+            },
+            {
+                "file": "images/trello-logo.png",
+                "menuIcon": true,
+                "name": "TRELLO_LOGO",
+                "type": "png"
+            },
+            {
+                "file": "images/trello-pending.png",
+                "name": "TRELLO_PENDING",
+                "type": "png"
+            },
+            {
+                "file": "images/trello-info.png",
+                "name": "TRELLO_INFO",
+                "type": "png"
+            },
+            {
+                "file": "images/trello-box.png",
+                "name": "TRELLO_BOX",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Trello Checklists",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "ab14a2ae-1855-4f88-b831-7ca11e6a38ca",
+    "versionLabel": "0.210",
+    "watchapp": {
+        "watchface": false
+    }
 }

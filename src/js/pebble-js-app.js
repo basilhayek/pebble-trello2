@@ -162,7 +162,7 @@ Pebble.addEventListener("appmessage",
           msg.itemidx = e.payload.itemidx;
           var state = e.payload.itemstate;
           if(hasFailed) {
-            console.log("Update has failed. Setting to old state.")
+            console.log("Update has failed. Setting to old state.");
             state = (state+1)%2;
           }
           //update our cache
@@ -180,16 +180,20 @@ Pebble.addEventListener("appmessage",
 
 function sendActiveChecklist() {
   var checklist = globalData.activeChecklist;
-  console.log("Sending checklist "+JSON.stringify(checklist));
+  // Update to only display unchecked items
+  console.log("*** Sending checklist "+JSON.stringify(checklist));
   var msg = {};
-  msg.type = MESSAGE_TYPE_CHECKLIST;
-  msg.numElements = checklist.checkItems.length;
-  for(var i=0; i<msg.numElements; ++i) {
-    var item = checklist.checkItems[i];
-    msg[2*i] = item.name;
-    msg[2*i+1] = item.state == 'incomplete'?0:1;
+  var uncheckedItems = 0;
+  for(var i=0; i<checklist.checkItems.length; ++i) {
+    if(checklist.checkItems[i].state == 'incomplete') {
+      var item = checklist.checkItems[i];
+      msg[2*uncheckedItems] = item.name;
+      msg[2*uncheckedItems+1] = item.state == 'incomplete'?0:1;
+      uncheckedItems++;
+    }
   }
-
+  msg.type = MESSAGE_TYPE_CHECKLIST;
+  msg.numElements = uncheckedItems;
   msg.checklistid = globalData.activeChecklist.id;
 
   sendToPebble(msg);

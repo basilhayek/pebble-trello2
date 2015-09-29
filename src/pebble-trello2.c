@@ -583,6 +583,7 @@ static void list_window_unload(Window *window) {
 }
 
 void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callback, const char* title) {
+
   bool cardDescription = window == &windows[CWINDOW_CHECKLISTS];
 
   window_set_window_handlers(window->window, (WindowHandlers) {
@@ -600,12 +601,16 @@ void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callba
 }
 
 static void very_short_vibe() {
+
+// Comment out to remove vibration 
+/*
   static const uint32_t const segments[] = { 50 };
   VibePattern pat = {
     .durations = segments,
     .num_segments = ARRAY_LENGTH(segments),
   };
   vibes_enqueue_custom_pattern(pat);
+  */
 }
 
 static void menu_list_select_callback(int index, void *ctx) {
@@ -636,8 +641,8 @@ static void menu_list_select_callback(int index, void *ctx) {
   Tuplet tuples[3] = {
     TupletInteger(MESSAGE_TYPE_DICT_KEY, MESSAGE_TYPE_SELECTED_LIST),
     TupletInteger(MESSAGE_BOARDIDX_DICT_KEY, selected_board_index),
-
-  TupletInteger(MESSAGE_LISTIDX_DICT_KEY, selected_list_index)};
+    TupletInteger(MESSAGE_LISTIDX_DICT_KEY, selected_list_index)
+  };
 
   for(int i=0 ;i<3;++i)
     dict_write_tuplet(iter, &tuples[i]);
@@ -747,7 +752,7 @@ static void menu_checklists_select_callback(int index, void *ctx) {
     display_message_failed(result);
 }
 
-
+// Logic for toggling checklist items on/off
 ElementState toggleState(ElementState oldState) {
   if (oldState == STATE_CHECKED || oldState == STATE_PENDING_C)
     return STATE_PENDING_UC;
@@ -756,6 +761,7 @@ ElementState toggleState(ElementState oldState) {
   return STATE_UNCHECKED;
 }
 
+// Callback for toggling checklist items on/off
 static void menu_checklist_item_select_callback(int index, void* ctx) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Checklist: selected item %i", index);
   APP_LOG(APP_LOG_LEVEL_DEBUG, "heap_bytes_used: %u, heap_bytes_free: %u", heap_bytes_used(), heap_bytes_free());
@@ -827,6 +833,7 @@ static void menu_board_select_callback(int index, void *ctx) {
   very_short_vibe();
   selected_board_index = index;
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Menu board: selected index %i", index);
+  
   windows[CWINDOW_LISTS].content = firstTree->sublists[index];
   createListWindow(&windows[CWINDOW_LISTS], menu_list_select_callback, firstTree->list->elements[index]);
   window_stack_push(windows[CWINDOW_LISTS].window, true);
@@ -857,6 +864,14 @@ static void in_received_handler(DictionaryIterator *iter, void *context) {
       window_stack_remove(windows[CWINDOW_LOADING].window, false);
       window_stack_push(windows[CWINDOW_BOARDS].window, true);
       applicationState = APPSTATE_DISPLAY_BOARDS;
+    
+      
+      // Auto-select the board I would use for checklists
+      //        "boardidx":1,"type":2,"listidx":0
+      APP_LOG(APP_LOG_LEVEL_DEBUG, "*** Auto-selecting board 1...");
+      menu_board_select_callback(1, NULL);
+      return;
+    
       if(firstTree->list->elementCount == 1) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Only one board, selecting...");
         window_stack_remove(windows[CWINDOW_BOARDS].window, true);

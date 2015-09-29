@@ -22,3 +22,5 @@
 #define MESSAGE_TYPE_ITEM_STATE_CHANGED 7
 #define MESSAGE_TYPE_HTTP_FAIL			8
 #define MESSAGE_TYPE_PING				10
+  
+static void menu_list_select_callback(int index, void *ctx);
